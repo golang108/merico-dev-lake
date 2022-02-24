@@ -44,6 +44,7 @@ func (plugin Github) Init() {
 		&models.GithubIssueEvent{},
 		&models.GithubIssueLabel{},
 		&models.GithubUser{},
+		&models.GithubPullRequestIssue{},
 	)
 	if err != nil {
 		logger.Error("Error migrating github: ", err)
@@ -73,27 +74,29 @@ func (plugin Github) Execute(options map[string]interface{}, progress chan<- flo
 	tasksToRun := make(map[string]bool, len(op.Tasks))
 	if len(op.Tasks) == 0 {
 		tasksToRun = map[string]bool{
-			"collectRepo":                true,
-			"collectCommits":             true,
-			"collectCommitsStat":         true,
-			"collectIssues":              true,
-			"collectIssueEvents":         true,
-			"collectIssueComments":       true,
-			"collectPullRequests":        true,
-			"collectPullRequestReviews":  true,
-			"collectPullRequestCommits":  true,
-			"collectPullRequestComments": true,
-			"enrichIssues":               true,
-			"enrichPullRequests":         true,
-			"convertRepos":               true,
-			"convertIssues":              true,
-			"convertIssueLabels":         true,
-			"convertPullRequests":        true,
-			"convertCommits":             true,
-			"convertPullRequestCommits":  true,
-			"convertPullRequestLabels":   true,
-			"convertNotes":               true,
-			"convertUsers":               true,
+			"collectRepo":                   true,
+			"collectCommits":                true,
+			"collectCommitsStat":            true,
+			"collectIssues":                 true,
+			"collectIssueEvents":            true,
+			"collectIssueComments":          true,
+			"collectPullRequests":           true,
+			"collectPullRequestReviews":     true,
+			"collectPullRequestCommits":     true,
+			"collectPullRequestComments":    true,
+			"enrichIssues":                  true,
+			"enrichPullRequests":            true,
+			"enrichGithubPullRequestIssues": true,
+			"convertRepos":                  true,
+			"convertIssues":                 true,
+			"convertIssueLabels":            true,
+			"convertPullRequests":           true,
+			"convertCommits":                true,
+			"convertPullRequestCommits":     true,
+			"convertPullRequestIssues":      true,
+			"convertPullRequestLabels":      true,
+			"convertNotes":                  true,
+			"convertUsers":                  true,
 		}
 	} else {
 		for _, task := range op.Tasks {
@@ -187,7 +190,6 @@ func (plugin Github) Execute(options map[string]interface{}, progress chan<- flo
 			}
 		}
 	}
-
 	if tasksToRun["collectPullRequests"] {
 		progress <- 0.4
 		fmt.Println("INFO >>> collecting PR collection")
@@ -251,6 +253,17 @@ func (plugin Github) Execute(options map[string]interface{}, progress chan<- flo
 		progress <- 0.92
 		fmt.Println("INFO >>> Enriching PullRequests")
 		err = tasks.EnrichGithubPullRequests(repoId, ctx)
+		if err != nil {
+			return &errors.SubTaskError{
+				Message:     fmt.Errorf("could not enrich PullRequests: %v", err).Error(),
+				SubTaskName: "enrichPullRequests",
+			}
+		}
+	}
+	if tasksToRun["enrichGithubPullRequestIssues"] {
+		progress <- 0.92
+		fmt.Println("INFO >>> Enriching PullRequests")
+		err = tasks.EnrichGithubPullRequestIssue(repoId, ctx)
 		if err != nil {
 			return &errors.SubTaskError{
 				Message:     fmt.Errorf("could not enrich PullRequests: %v", err).Error(),
@@ -322,6 +335,17 @@ func (plugin Github) Execute(options map[string]interface{}, progress chan<- flo
 			return &errors.SubTaskError{
 				Message:     fmt.Errorf("could not convert PullRequestCommits: %v", err).Error(),
 				SubTaskName: "convertPullRequestCommits",
+			}
+		}
+	}
+	if tasksToRun["convertPullRequestIssues"] {
+		progress <- 0.97
+		fmt.Println("INFO >>> starting Issue Comments collection")
+		err = tasks.ConvertPullRequestIssues()
+		if err != nil {
+			return &errors.SubTaskError{
+				Message:     fmt.Errorf("Could not collect Issue Comments: %v", err).Error(),
+				SubTaskName: "collectIssueComments",
 			}
 		}
 	}
@@ -407,25 +431,28 @@ func main() {
 				"owner": owner,
 				"repo":  repo,
 				"tasks": []string{
-					"collectRepo",
+					//"collectRepo",
 					//"collectCommits",
 					//"collectCommitsStat",
 					"collectIssues",
 					"collectPullRequests",
-					//"collectIssueEvents",
+					"collectIssueEvents",
 					"collectIssueComments",
-					//"collectPullRequestReviews",
-					//"collectPullRequestCommits",
-					//"collectPullRequestComments",
+					"collectPullRequestReviews",
+					"collectPullRequestCommits",
+					"collectPullRequestComments",
 					"enrichIssues",
 					"enrichPullRequests",
-					//"convertRepos",
+					"convertRepos",
 					"convertIssues",
 					"convertIssueLabels",
 					"convertPullRequests",
 					"convertPullRequestLabels",
+					"enrichGithubPullRequestIssues",
 					//"convertCommits",
-					//"convertPullRequestCommits",
+					"convertPullRequestCommits",
+					"convertPullRequestIssues",
+
 					//"convertNotes",
 					//"convertUsers",
 				},
