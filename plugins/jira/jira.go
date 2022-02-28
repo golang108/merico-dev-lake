@@ -3,11 +3,12 @@ package main // must be main for plugin entry point
 import (
 	"context"
 	"fmt"
-	errors "github.com/merico-dev/lake/errors"
-	"github.com/merico-dev/lake/utils"
 	"os"
 	"strconv"
 	"time"
+
+	errors "github.com/merico-dev/lake/errors"
+	"github.com/merico-dev/lake/utils"
 
 	"github.com/merico-dev/lake/logger"
 	lakeModels "github.com/merico-dev/lake/models"
@@ -173,7 +174,8 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 		}
 		setBoardProgress(i, 0.01)
 		if tasksToRun["collectIssues"] {
-			err = tasks.CollectIssues(jiraApiClient, source, boardId, since, rateLimitPerSecondInt, ctx)
+			//err = tasks.CollectIssues(jiraApiClient, source, boardId, since, rateLimitPerSecondInt, ctx)
+			err = tasks.CollectApiIssues(jiraApiClient, source, boardId, since)
 			if err != nil {
 				return &errors.SubTaskError{
 					SubTaskName: "collectIssues",
