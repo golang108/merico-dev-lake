@@ -87,7 +87,7 @@ func CollectChildrenOnPipelines(projectIdInt int, gitlabApiClient *GitlabApiClie
 		pipeline := (pipelines)[i]
 		getUrl := fmt.Sprintf("projects/%v/pipelines/%v", projectIdInt, pipeline.GitlabId)
 
-		err := gitlabApiClient.GetAsync(getUrl, nil, func(res *http.Response) error {
+		err := gitlabApiClient.GetAsync(getUrl, nil, nil, func(res *http.Response) error {
 			// Check the StatusCode of the HTTP response
 			if res.StatusCode != 200 {
 				return fmt.Errorf("got a bad response StatusCode [%d] when requesting [%s]", res.StatusCode, getUrl)
@@ -123,7 +123,7 @@ func CollectChildrenOnPipelines(projectIdInt int, gitlabApiClient *GitlabApiClie
 		}
 
 	}
-	gitlabApiClient.WaitOtherGoroutines()
+	gitlabApiClient.WaitAsync()
 	return nil
 }
 
