@@ -102,9 +102,10 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 	}
 	if len(tasksToRun) == 0 {
 		tasksToRun = map[string]bool{
-			"collectBoard":        true,
-			"collectProjects":     true,
-			"collectIssues":       true,
+			"collectBoard":    true,
+			"collectProjects": true,
+			//"collectIssues":       true,
+			"collectApiIssues":    true,
 			"collectChangelogs":   true,
 			"collectRemotelinks":  true,
 			"enrichIssues":        true,
@@ -142,8 +143,9 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 
 	jiraApiClient, err := tasks.NewJiraApiClientBySourceId(op.SourceId, scheduler)
 	if err != nil {
-		return fmt.Errorf("failed to create jira api client: %v", err)
+		return fmt.Errorf("failed to create jira api client: %w", err)
 	}
+	taskCtx := core.NewDefaultTaskContext(ctx, nil)
 	for i, boardId := range boardIds {
 		if tasksToRun["collectProjects"] {
 			err := tasks.CollectProjects(jiraApiClient, op.SourceId)
@@ -174,11 +176,20 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 		}
 		setBoardProgress(i, 0.01)
 		if tasksToRun["collectIssues"] {
-			//err = tasks.CollectIssues(jiraApiClient, source, boardId, since, rateLimitPerSecondInt, ctx)
-			err = tasks.CollectApiIssues(jiraApiClient, source, boardId, since)
+			err = tasks.CollectIssues(jiraApiClient, source, boardId, since, rateLimitPerSecondInt, ctx)
 			if err != nil {
 				return &errors.SubTaskError{
 					SubTaskName: "collectIssues",
+					Message:     err.Error(),
+				}
+			}
+		}
+		setBoardProgress(i, 0.02)
+		if tasksToRun["collectApiIssues"] {
+			err = tasks.CollectApiIssues(taskCtx, jiraApiClient, source, boardId, since)
+			if err != nil {
+				return &errors.SubTaskError{
+					SubTaskName: "collectApiIssues",
 					Message:     err.Error(),
 				}
 			}
@@ -393,22 +404,23 @@ func main() {
 				"sourceId": sourceId,
 				"boardId":  boardId,
 				"tasks": []string{
-					"collectBoard",
-					"collectProjects",
-					"collectIssues",
+					//"collectBoard",
+					//"collectProjects",
+					//"collectIssues",
+					"collectApiIssues",
 					//"collectChangelogs",
 					//"collectRemotelinks",
-					"enrichIssues",
-					"enrichRemotelinks",
-					"collectSprints",
-					"collectUsers",
-					"convertBoard",
-					"convertIssues",
-					"convertWorklogs",
-					"convertChangelogs",
-					"convertUsers",
-					"convertSprints",
-					"convertIssueCommits",
+					//"enrichIssues",
+					//"enrichRemotelinks",
+					//"collectSprints",
+					//"collectUsers",
+					//"convertBoard",
+					//"convertIssues",
+					//"convertWorklogs",
+					//"convertChangelogs",
+					//"convertUsers",
+					//"convertSprints",
+					//"convertIssueCommits",
 				},
 			},
 			progress,
