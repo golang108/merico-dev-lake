@@ -134,7 +134,7 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 		Source:    source,
 		Since:     since,
 	}
-	taskCtx := helper.NewDefaultTaskContext(ctx, logger, taskData)
+	taskCtx := helper.NewDefaultTaskContext("jira", ctx, logger, taskData, tasksToRun)
 
 	// run tasks
 	logger.Info("start jira plugin execution")
@@ -176,8 +176,13 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 		}
 	}
 	progress <- 0.02
-	if tasksToRun["collectApiIssues"] {
-		err = tasks.CollectApiIssues(taskCtx)
+
+	collectApiIssuesCtx, err := taskCtx.SubTaskContext("collectApiIssues")
+	if err != nil {
+		return err
+	}
+	if collectApiIssuesCtx != nil {
+		err = tasks.CollectApiIssues(collectApiIssuesCtx)
 		if err != nil {
 			return &errors.SubTaskError{
 				SubTaskName: "collectApiIssues",
@@ -185,6 +190,7 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 			}
 		}
 	}
+
 	progress <- 0.1
 	if tasksToRun["collectChangelogs"] {
 		err = tasks.CollectChangelogs(jiraApiClient, source, boardId, rateLimit, ctx)
