@@ -142,7 +142,7 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 	taskCtx := helper.NewDefaultTaskContext("jira", ctx, logger, taskData, tasksToRun)
 
 	// run tasks
-	logger.Info("start jira plugin execution")
+	logger.Info("start plugin execution")
 	if tasksToRun["collectProjects"] {
 		err := tasks.CollectProjects(jiraApiClient, op.SourceId)
 		if err != nil {
@@ -329,7 +329,7 @@ func (plugin Jira) Execute(options map[string]interface{}, progress chan<- float
 		}
 	}
 	progress <- 1.0
-	logger.Info("end jira plugin execution")
+	logger.Info("end plugin execution")
 	return nil
 }
 
