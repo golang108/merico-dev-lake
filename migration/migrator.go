@@ -15,6 +15,10 @@ type migrator struct {
 	scripts map[string][]Script
 }
 
+func Init(db *gorm.DB) {
+	m.db = db
+}
+
 func (m *migrator) register(scripts ...Script) {
 	m.Lock()
 	defer m.Unlock()
@@ -79,7 +83,6 @@ func Register(script ...Script) {
 	m.register(script...)
 }
 
-func Execute(ctx context.Context, db *gorm.DB) error {
-	m.db = db
+func Execute(ctx context.Context) error {
 	return m.execute(ctx)
 }
