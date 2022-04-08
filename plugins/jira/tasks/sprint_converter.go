@@ -22,9 +22,9 @@ func ConvertSprints(taskCtx core.SubTaskContext) error {
 	db := taskCtx.GetDb()
 	logger.Info("convert sprints")
 	cursor, err := db.Model(&models.JiraSprint{}).
-		Select("jira_sprints.*").
-		Joins("left join jira_board_sprints on jira_board_sprints.sprint_id = jira_sprints.sprint_id").
-		Where("jira_board_sprints.source_id = ? AND jira_board_sprints.board_id = ?", sourceId, boardId).
+		Select("_tool_jira_sprints.*").
+		Joins("left join _tool_jira_board_sprints on _tool_jira_board_sprints.sprint_id = _tool_jira_sprints.sprint_id").
+		Where("_tool_jira_board_sprints.source_id = ? AND _tool_jira_board_sprints.board_id = ?", sourceId, boardId).
 		Rows()
 	if err != nil {
 		return err

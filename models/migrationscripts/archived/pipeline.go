@@ -22,3 +22,7 @@ type Pipeline struct {
 	SpentSeconds  int
 	Step          int
 }
+
+func (Pipeline) TableName() string {
+	return "_devlake_pipelines"
+}

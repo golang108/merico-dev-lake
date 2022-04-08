@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	tableName = "migration_history"
+	tableName = "_devlake_migration_history"
 )
 
 type MigrationHistory struct {

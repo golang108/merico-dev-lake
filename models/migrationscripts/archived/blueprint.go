@@ -12,3 +12,7 @@ type Blueprint struct {
 	CronConfig string
 	common.Model
 }
+
+func (Blueprint) TableName() string {
+	return "_devlake_blueprints"
+}

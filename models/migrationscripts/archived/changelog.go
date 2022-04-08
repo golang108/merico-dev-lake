@@ -9,11 +9,11 @@ import (
 type Changelog struct {
 	domainlayer.DomainEntity
 	IssueId     string `gorm:"index"`
-	AuthorId    string
-	AuthorName  string
-	FieldId     string
-	FieldName   string
-	From        string
-	To          string
+	AuthorId    string `gorm:"type:char(255)"`
+	AuthorName  string `gorm:"type:char(255)"`
+	FieldId     string `gorm:"type:char(255)"`
+	FieldName   string `gorm:"type:char(255)"`
+	From        string `gorm:"type:char(255)"`
+	To          string `gorm:"type:char(255)"`
 	CreatedDate time.Time
 }

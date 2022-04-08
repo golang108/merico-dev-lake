@@ -28,3 +28,15 @@ type JiraIssueStatusMapping struct {
 	UserStatus     string `gorm:"type:varchar(50);primaryKey" json:"userStatus" validate:"required"`
 	StandardStatus string `gorm:"type:varchar(50)" json:"standardStatus" validate:"required"`
 }
+
+func (JiraSource) TableName() string {
+	return "_tool_jira_sources"
+}
+
+func (JiraIssueTypeMapping) TableName() string {
+	return "_tool_jira_issue_type_mappings"
+}
+
+func (JiraIssueStatusMapping) TableName() string {
+	return "_tool_jira_issue_status_mappings"
+}

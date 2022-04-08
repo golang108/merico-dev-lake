@@ -63,8 +63,9 @@ func (m *migrator) execute(ctx context.Context) error {
 func (m *migrator) getLastVersion() (map[string]uint64, error) {
 	var err error
 	versions := make(map[string]uint64)
-	if !m.db.Migrator().HasTable(tableName) {
-		return versions, nil
+	err = m.db.Migrator().AutoMigrate(&MigrationHistory{})
+	if err != nil {
+		return nil, err
 	}
 	var records []MigrationHistory
 	err = m.db.Find(&records).Error

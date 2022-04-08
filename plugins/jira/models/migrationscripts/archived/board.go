@@ -9,13 +9,9 @@ type JiraBoard struct {
 	SourceId  uint64 `gorm:"primaryKey"`
 	BoardId   uint64 `gorm:"primaryKey"`
 	ProjectId uint
-	Name      string
-	Self      string
-	Type      string
-}
-
-func (JiraBoard) TableName() string {
-	return "_tool_jira_boards"
+	Name      string `gorm:"type:varchar(255)"`
+	Self      string `gorm:"type:varchar(255)"`
+	Type      string `gorm:"type:varchar(100)"`
 }
 
 type JiraBoardIssue struct {
@@ -23,6 +19,10 @@ type JiraBoardIssue struct {
 	BoardId  uint64 `gorm:"primaryKey"`
 	IssueId  uint64 `gorm:"primaryKey"`
 	common.NoPKModel
+}
+
+func (JiraBoard) TableName() string {
+	return "_tool_jira_boards"
 }
 
 func (JiraBoardIssue) TableName() string {

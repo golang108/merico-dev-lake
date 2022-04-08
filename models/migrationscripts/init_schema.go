@@ -11,7 +11,6 @@ type initSchemas struct{}
 
 func (*initSchemas) Up(ctx context.Context, db *gorm.DB) error {
 	return db.Migrator().AutoMigrate(
-		&archived.MigrationHistory{},
 		&archived.Task{},
 		&archived.Notification{},
 		&archived.Pipeline{},
@@ -31,6 +30,7 @@ func (*initSchemas) Up(ctx context.Context, db *gorm.DB) error {
 		&archived.Board{},
 		&archived.Issue{},
 		&archived.IssueLabel{},
+		&archived.IssueComment{},
 		&archived.BoardIssue{},
 		&archived.BoardSprint{},
 		&archived.Changelog{},
@@ -56,7 +56,7 @@ func (*initSchemas) Version() uint64 {
 }
 
 func (*initSchemas) Owner() string {
-	return "framework"
+	return "Framework"
 }
 
 func (*initSchemas) Comment() string {

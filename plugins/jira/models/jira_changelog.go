@@ -13,14 +13,10 @@ type JiraChangelog struct {
 	SourceId          uint64 `gorm:"primaryKey"`
 	ChangelogId       uint64 `gorm:"primarykey"`
 	IssueId           uint64 `gorm:"index"`
-	AuthorAccountId   string
-	AuthorDisplayName string
+	AuthorAccountId   string `gorm:"type:varchar(255)"`
+	AuthorDisplayName string `gorm:"type:varchar(255)"`
 	AuthorActive      bool
 	Created           time.Time `gorm:"index"`
-}
-
-func (JiraChangelog) TableName() string {
-	return "_tool_jira_changelogs"
 }
 
 type JiraChangelogItem struct {
@@ -36,6 +32,10 @@ type JiraChangelogItem struct {
 	FromString  string
 	To          string
 	ToString    string
+}
+
+func (JiraChangelog) TableName() string {
+	return "_tool_jira_changelogs"
 }
 
 func (JiraChangelogItem) TableName() string {

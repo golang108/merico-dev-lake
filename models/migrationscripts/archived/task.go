@@ -22,3 +22,7 @@ type Task struct {
 	FinishedAt    *time.Time `gorm:"index"`
 	SpentSeconds  int
 }
+
+func (Task) TableName() string {
+	return "_devlake_tasks"
+}

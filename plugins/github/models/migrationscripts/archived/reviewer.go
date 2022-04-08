@@ -1,4 +1,4 @@
-package models
+package archived
 
 import (
 	"github.com/merico-dev/lake/models/common"
@@ -12,7 +12,6 @@ type GithubReviewer struct {
 	common.NoPKModel
 }
 
-func (GithubReviewer) TableName() string{
+func (GithubReviewer) TableName() string {
 	return "_tool_github_reviewers"
 }
-
