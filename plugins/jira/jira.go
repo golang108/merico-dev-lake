@@ -5,16 +5,17 @@ import (
 	"net/http"
 	"time"
 
-	"gorm.io/gorm"
-
+	"github.com/merico-dev/lake/migration"
 	"github.com/merico-dev/lake/plugins/core"
 	"github.com/merico-dev/lake/plugins/jira/api"
 	"github.com/merico-dev/lake/plugins/jira/models"
+	"github.com/merico-dev/lake/plugins/jira/models/migrationscripts"
 	"github.com/merico-dev/lake/plugins/jira/tasks"
 	"github.com/merico-dev/lake/runner"
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 )
 
 var _ core.PluginMeta = (*Jira)(nil)
@@ -26,23 +27,8 @@ type Jira struct{}
 
 func (plugin Jira) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
 	api.Init(config, logger, db)
-	return db.AutoMigrate(
-		&models.JiraProject{},
-		&models.JiraUser{},
-		&models.JiraIssue{},
-		&models.JiraBoard{},
-		&models.JiraBoardIssue{},
-		&models.JiraChangelog{},
-		&models.JiraChangelogItem{},
-		&models.JiraRemotelink{},
-		&models.JiraIssueCommit{},
-		&models.JiraSource{},
-		&models.JiraIssueTypeMapping{},
-		&models.JiraIssueStatusMapping{},
-		&models.JiraSprint{},
-		&models.JiraBoardSprint{},
-		&models.JiraSprintIssue{},
-		&models.JiraWorklog{})
+	migration.Register(new(migrationscripts.InitSchemas))
+	return nil
 }
 
 func (plugin Jira) Description() string {

@@ -3,15 +3,16 @@ package main // must be main for plugin entry point
 import (
 	"fmt"
 
+	"github.com/merico-dev/lake/migration"
 	"github.com/merico-dev/lake/plugins/ae/api"
-	"github.com/merico-dev/lake/plugins/ae/models"
+	"github.com/merico-dev/lake/plugins/ae/models/migrationscripts"
 	"github.com/merico-dev/lake/plugins/ae/tasks"
 	"github.com/merico-dev/lake/plugins/core"
 	"github.com/merico-dev/lake/runner"
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gorm.io/gorm" // A pseudo type for Plugin Interface implementation
+	"gorm.io/gorm"
 )
 
 var _ core.PluginMeta = (*AE)(nil)
@@ -22,11 +23,8 @@ var _ core.PluginApi = (*AE)(nil)
 type AE struct{}
 
 func (plugin AE) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
-	// you can pass down db instance to plugin api
-	return db.AutoMigrate(
-		&models.AEProject{},
-		&models.AECommit{},
-	)
+	migration.Register(new(migrationscripts.InitSchemas))
+	return nil
 }
 
 func (plugin AE) Description() string {

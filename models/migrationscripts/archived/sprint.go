@@ -9,14 +9,14 @@ import (
 
 type Sprint struct {
 	domainlayer.DomainEntity
-	Name          string
-	Url           string
-	Status        string
-	Title         string
-	StartedDate   *time.Time
-	EndedDate     *time.Time
-	CompletedDate *time.Time
-	OriginBoardID string
+	Name            string
+	Url             string
+	Status          string
+	Title           string
+	StartedDate     *time.Time
+	EndedDate       *time.Time
+	CompletedDate   *time.Time
+	OriginalBoardID string
 }
 
 type SprintIssue struct {

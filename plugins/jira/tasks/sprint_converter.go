@@ -50,14 +50,14 @@ func ConvertSprints(taskCtx core.SubTaskContext) error {
 			var result []interface{}
 			jiraSprint := inputRow.(*models.JiraSprint)
 			sprint := &ticket.Sprint{
-				DomainEntity:  domainlayer.DomainEntity{Id: sprintIdGen.Generate(sourceId, jiraSprint.SprintId)},
-				Url:           jiraSprint.Self,
-				Status:        strings.ToUpper(jiraSprint.State),
-				Name:          jiraSprint.Name,
-				StartedDate:   jiraSprint.StartDate,
-				EndedDate:     jiraSprint.EndDate,
-				CompletedDate: jiraSprint.CompleteDate,
-				OriginBoardID: boardIdGen.Generate(sourceId, jiraSprint.OriginBoardID),
+				DomainEntity:    domainlayer.DomainEntity{Id: sprintIdGen.Generate(sourceId, jiraSprint.SprintId)},
+				Url:             jiraSprint.Self,
+				Status:          strings.ToUpper(jiraSprint.State),
+				Name:            jiraSprint.Name,
+				StartedDate:     jiraSprint.StartDate,
+				EndedDate:       jiraSprint.EndDate,
+				CompletedDate:   jiraSprint.CompleteDate,
+				OriginalBoardID: boardIdGen.Generate(sourceId, jiraSprint.OriginBoardID),
 			}
 			result = append(result, sprint)
 			var sprintIssues []models.JiraSprintIssue

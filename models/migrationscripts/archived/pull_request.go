@@ -9,8 +9,9 @@ import (
 
 type PullRequest struct {
 	domainlayer.DomainEntity
-	RepoId         string `gorm:"index"`
-	Status         string `gorm:"comment:open/closed or other"`
+	BaseRepoId     string `gorm:"index"`
+	HeadRepoId     string `gorm:"index"`
+	Status         string `gorm:"type:varchar(100);comment:open/closed or other"`
 	Title          string
 	Description    string
 	Url            string `gorm:"type:char(255)"`
@@ -20,18 +21,18 @@ type PullRequest struct {
 	Key            int
 	CreatedDate    time.Time
 	MergedDate     *time.Time
-	ClosedAt       *time.Time
-	Type           string
-	Component      string
+	ClosedDate     *time.Time
+	Type           string `gorm:"type:char(100)"`
+	Component      string `gorm:"type:char(100)"`
 	MergeCommitSha string `gorm:"type:char(40)"`
-	HeadRef        string
-	BaseRef        string
-	BaseCommitSha  string
-	HeadCommitSha  string
+	HeadRef        string `gorm:"type:char(255)"`
+	BaseRef        string `gorm:"type:char(255)"`
+	BaseCommitSha  string `gorm:"type:char(40)"`
+	HeadCommitSha  string `gorm:"type:char(40)"`
 }
 
 type PullRequestCommit struct {
-	CommitSha     string `gorm:"primaryKey"`
+	CommitSha     string `gorm:"primaryKey;type:char(40)"`
 	PullRequestId string `json:"id" gorm:"primaryKey;type:varchar(255);comment:This key is generated based on details from the original plugin"` // format: <Plugin>:<Entity>:<PK0>:<PK1>
 	common.NoPKModel
 }
@@ -49,6 +50,6 @@ type PullRequestIssue struct {
 
 type PullRequestLabel struct {
 	PullRequestId string `json:"id" gorm:"primaryKey;type:varchar(255);comment:This key is generated based on details from the original plugin"` // format: <Plugin>:<Entity>:<PK0>:<PK1>
-	LabelName     string `gorm:"primaryKey"`
+	LabelName     string `gorm:"primaryKey;type:varchar(255)"`
 	common.NoPKModel
 }

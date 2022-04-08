@@ -50,3 +50,7 @@ type JiraIssue struct {
 	RemotelinkUpdated *time.Time
 	common.NoPKModel
 }
+
+func (JiraIssue) TableName() string {
+	return "_tool_jira_issues"
+}

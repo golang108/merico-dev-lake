@@ -1,12 +1,10 @@
 package main // must be main for plugin entry point
 
 import (
-
-	// A pseudo type for Plugin Interface implementation
-
+	"github.com/merico-dev/lake/migration"
 	"github.com/merico-dev/lake/plugins/core"
 	"github.com/merico-dev/lake/plugins/gitlab/api"
-	"github.com/merico-dev/lake/plugins/gitlab/models"
+	"github.com/merico-dev/lake/plugins/gitlab/models/migrationscripts"
 	"github.com/merico-dev/lake/plugins/gitlab/tasks"
 	"github.com/merico-dev/lake/runner"
 	"github.com/mitchellh/mapstructure"
@@ -23,19 +21,8 @@ var _ core.PluginApi = (*Gitlab)(nil)
 type Gitlab string
 
 func (plugin Gitlab) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
-	// you can pass down db instance to plugin api
-	return db.AutoMigrate(
-		&models.GitlabProject{},
-		&models.GitlabMergeRequest{},
-		&models.GitlabCommit{},
-		&models.GitlabTag{},
-		&models.GitlabProjectCommit{},
-		&models.GitlabPipeline{},
-		&models.GitlabReviewer{},
-		&models.GitlabMergeRequestNote{},
-		&models.GitlabMergeRequestCommit{},
-		&models.GitlabUser{},
-	)
+	migration.Register(new(migrationscripts.InitSchemas))
+	return nil
 }
 
 func (plugin Gitlab) Description() string {

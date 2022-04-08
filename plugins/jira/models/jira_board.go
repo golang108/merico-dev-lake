@@ -13,3 +13,7 @@ type JiraBoard struct {
 	Self      string
 	Type      string
 }
+
+func (JiraBoard) TableName() string {
+	return "_tool_jira_boards"
+}

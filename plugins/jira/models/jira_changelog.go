@@ -19,6 +19,10 @@ type JiraChangelog struct {
 	Created           time.Time `gorm:"index"`
 }
 
+func (JiraChangelog) TableName() string {
+	return "_tool_jira_changelogs"
+}
+
 type JiraChangelogItem struct {
 	common.NoPKModel
 
@@ -32,4 +36,8 @@ type JiraChangelogItem struct {
 	FromString  string
 	To          string
 	ToString    string
+}
+
+func (JiraChangelogItem) TableName() string {
+	return "_tool_jira_changelog_items"
 }

@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/merico-dev/lake/migration"
 	"github.com/merico-dev/lake/plugins/core"
 	"github.com/merico-dev/lake/plugins/jenkins/api"
-	"github.com/merico-dev/lake/plugins/jenkins/models"
+	"github.com/merico-dev/lake/plugins/jenkins/models/migrationscripts"
 	"github.com/merico-dev/lake/plugins/jenkins/tasks"
 	"github.com/merico-dev/lake/runner"
 	"github.com/mitchellh/mapstructure"
@@ -21,10 +23,8 @@ var _ core.PluginApi = (*Jenkins)(nil)
 type Jenkins struct{}
 
 func (plugin Jenkins) Init(config *viper.Viper, logger core.Logger, db *gorm.DB) error {
-	return db.AutoMigrate(
-		&models.JenkinsJob{},
-		&models.JenkinsBuild{},
-	)
+	migration.Register(new(migrationscripts.InitSchemas))
+	return nil
 }
 
 func (plugin Jenkins) Description() string {
