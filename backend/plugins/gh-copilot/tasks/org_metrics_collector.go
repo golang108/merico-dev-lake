@@ -20,7 +20,6 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"time"
@@ -70,6 +69,7 @@ func CollectOrgMetrics(taskCtx plugin.SubTaskContext) errors.Error {
 
 	now := time.Now().UTC()
 	start, until := computeReportDateRange(now, collector.GetSince())
+	start = clampDailyMetricsStartForBackfill(start, until)
 	logger := taskCtx.GetLogger()
 
 	dayIter := newDayIterator(start, until)
