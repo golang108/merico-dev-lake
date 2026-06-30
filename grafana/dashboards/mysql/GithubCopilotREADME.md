@@ -30,6 +30,8 @@ Tracks GitHub Copilot usage metrics across your organization:
 - IDE distribution (VS Code, JetBrains, Neovim, etc.)
 - Acceptance rates for code suggestions
 - Chat and PR summary feature usage
+- **AI Credit Consumption**: gross/net credits and billed amount over time, broken down by model and
+  product/SKU (sourced from `_tool_copilot_ai_credit_usage`)
 
 ### 2. GitHub Copilot Impact Dashboard (`GithubCopilotImpact.json`)
 

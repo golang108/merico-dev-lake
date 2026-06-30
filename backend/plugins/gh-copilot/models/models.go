@@ -47,5 +47,7 @@ func GetTablesInfo() []dal.Tabler {
 		&GhCopilotSeat{},
 		// User-team mappings
 		&GhCopilotUserTeam{},
+		// AI credit billing usage
+		&GhCopilotAiCreditUsage{},
 	}
 }

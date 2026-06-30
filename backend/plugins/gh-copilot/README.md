@@ -28,11 +28,22 @@ It follows the same structure/patterns as other DevLake data-source plugins (not
 - `GET /orgs/{org}/copilot/billing/seats`
 - `GET /orgs/{org}/copilot/metrics`
 
+**AI credit usage endpoints** (GitHub Billing Usage REST API, version `2026-03-10`):
+
+- `GET /enterprises/{enterprise}/settings/billing/ai_credit/usage`
+- `GET /organizations/{org}/settings/billing/ai_credit/usage` (note: `organizations/`, not `orgs/`)
+
+These are collected **daily** (one request per day, iterating `year`/`month`/`day`) and report Copilot
+**AI credit consumption** broken down by product, SKU and model. Quantities and amounts are floats and the
+`unit_type` is `ai-credits`.
+
 **Stored data (tool layer)**:
 
 - `_tool_copilot_org_metrics` (daily aggregates)
 - `_tool_copilot_language_metrics` (editor/language breakdown)
 - `_tool_copilot_seats` (seat assignments)
+- `_tool_copilot_ai_credit_usage` (daily AI credit consumption: gross/net quantity and amount per
+  product/sku/model, at `enterprise` or `organization` level)
 
 ## Data flow (high level)
 
@@ -61,6 +72,9 @@ flowchart LR
 
 - GitHub Copilot Business or Enterprise enabled for the target organization
 - A token that can access GitHub Copilot billing/metrics (classic PAT with `manage_billing:copilot` works)
+- For **AI credit usage**, the token additionally needs billing read access:
+  `manage_billing:copilot` (or `admin:enterprise` for the enterprise endpoint / `admin:org` for the
+  organization endpoint)
 
 ### 1) Create a connection
 

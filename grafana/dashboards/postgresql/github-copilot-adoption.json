@@ -2255,6 +2255,429 @@
       ],
       "title": "Data Volume by Table",
       "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 112
+      },
+      "id": 40,
+      "panels": [],
+      "title": "AI Credit Consumption",
+      "type": "row"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "Total gross AI credits consumed in the selected period",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 113
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT SUM(gross_quantity) AS \"Gross Credits\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}'",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Gross Credits",
+      "type": "stat"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "Total net AI credits (after discounts) in the selected period",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 113
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT SUM(net_quantity) AS \"Net Credits\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}'",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Net Credits",
+      "type": "stat"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "Total net billed amount (after discounts) in the selected period",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 113
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT SUM(net_amount) AS \"Net Amount\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}'",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Net Amount",
+      "type": "stat"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "Total gross billed amount in the selected period",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 113
+      },
+      "id": 44,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT SUM(gross_amount) AS \"Gross Amount\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}'",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Gross Amount",
+      "type": "stat"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "Gross vs net AI credits consumed per day",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Credits",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 117
+      },
+      "id": 45,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \"date\" AS time, SUM(gross_quantity) AS \"Gross Credits\", SUM(net_quantity) AS \"Net Credits\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}' GROUP BY \"date\" ORDER BY 1 NULLS LAST",
+          "refId": "A"
+        }
+      ],
+      "title": "AI Credits Consumed Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "AI credit consumption broken down by model",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 125
+      },
+      "id": 46,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT model AS \"Model\", SUM(gross_quantity) AS \"Gross Credits\", SUM(net_quantity) AS \"Net Credits\", SUM(net_amount) AS \"Net Amount\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}' GROUP BY \"model\" ORDER BY SUM(gross_quantity) DESC NULLS LAST LIMIT 20",
+          "refId": "A"
+        }
+      ],
+      "title": "AI Credits by Model",
+      "type": "table"
+    },
+    {
+      "datasource": "postgresql",
+      "description": "AI credit consumption broken down by product and SKU",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 125
+      },
+      "id": 47,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "postgresql",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT product AS \"Product\", sku AS \"SKU\", SUM(gross_quantity) AS \"Gross Credits\", SUM(net_quantity) AS \"Net Credits\", SUM(net_amount) AS \"Net Amount\" FROM _tool_copilot_ai_credit_usage WHERE $__timeFilter(\"date\") AND ('${connection_id}' = '' OR connection_id::text = '${connection_id}') AND scope_id = '${scope_id}' GROUP BY \"product\", \"sku\" ORDER BY SUM(gross_quantity) DESC NULLS LAST LIMIT 20",
+          "refId": "A"
+        }
+      ],
+      "title": "AI Credits by Product / SKU",
+      "type": "table"
     }
   ],
   "refresh": "",

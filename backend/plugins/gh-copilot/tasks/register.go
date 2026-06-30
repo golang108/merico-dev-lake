@@ -28,11 +28,15 @@ func GetSubTaskMetas() []plugin.SubTaskMeta {
 		CollectEnterpriseMetricsMeta,
 		CollectUserMetricsMeta,
 		CollectUserTeamsMeta,
+		CollectEnterpriseAiCreditUsageMeta,
+		CollectOrgAiCreditUsageMeta,
 		// Extractors
 		ExtractSeatsMeta,
 		ExtractOrgMetricsMeta,
 		ExtractEnterpriseMetricsMeta,
 		ExtractUserMetricsMeta,
 		ExtractUserTeamsMeta,
+		ExtractEnterpriseAiCreditUsageMeta,
+		ExtractOrgAiCreditUsageMeta,
 	}
 }
