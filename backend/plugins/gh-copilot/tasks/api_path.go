@@ -17,12 +17,8 @@ limitations under the License.
 
 package tasks
 
-import (
-	"fmt"
-	"net/url"
-	"strings"
-)
+import "github.com/apache/incubator-devlake/plugins/gh-copilot/internal/utils"
 
 func copilotAPIPath(namespace, slug, resource string) string {
-	return fmt.Sprintf("%s/%s/%s", namespace, url.PathEscape(strings.TrimSpace(slug)), strings.TrimPrefix(resource, "/"))
+	return utils.CopilotAPIPath(namespace, slug, resource)
 }

@@ -15,28 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package service
+package utils
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"fmt"
+	"net/url"
+	"strings"
 )
 
-func TestCopilotAPIPathPreservesHyphenatedEnterpriseSlug(t *testing.T) {
-	path := copilotAPIPath("enterprises", "my-enterprise", "copilot/billing/seats")
-
-	assert.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
-}
-
-func TestCopilotAPIPathTrimsAndEscapesSlugAndResource(t *testing.T) {
-	path := copilotAPIPath("enterprises", "  my-enterprise  ", "/copilot/billing/seats")
-
-	assert.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
-}
-
-func TestCopilotAPIPathEscapesSlugSegments(t *testing.T) {
-	path := copilotAPIPath("orgs", "my enterprise", "/copilot/billing")
-
-	assert.Equal(t, "orgs/my%20enterprise/copilot/billing", path)
+func CopilotAPIPath(namespace, slug, resource string) string {
+	return fmt.Sprintf("%s/%s/%s", namespace, url.PathEscape(strings.TrimSpace(slug)), strings.TrimPrefix(resource, "/"))
 }

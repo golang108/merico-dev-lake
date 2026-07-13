@@ -15,28 +15,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package service
+package utils
 
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestCopilotAPIPathPreservesHyphenatedEnterpriseSlug(t *testing.T) {
-	path := copilotAPIPath("enterprises", "my-enterprise", "copilot/billing/seats")
-
-	assert.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
-}
-
 func TestCopilotAPIPathTrimsAndEscapesSlugAndResource(t *testing.T) {
-	path := copilotAPIPath("enterprises", "  my-enterprise  ", "/copilot/billing/seats")
+	path := CopilotAPIPath("enterprises", "  my-enterprise  ", "/copilot/billing/seats")
 
-	assert.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
+	require.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
 }
 
 func TestCopilotAPIPathEscapesSlugSegments(t *testing.T) {
-	path := copilotAPIPath("orgs", "my enterprise", "/copilot/billing")
+	path := CopilotAPIPath("orgs", "my enterprise", "/copilot/billing")
 
-	assert.Equal(t, "orgs/my%20enterprise/copilot/billing", path)
+	require.Equal(t, "orgs/my%20enterprise/copilot/billing", path)
 }

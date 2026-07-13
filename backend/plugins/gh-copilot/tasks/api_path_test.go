@@ -28,3 +28,15 @@ func TestCopilotAPIPathPreservesHyphenatedEnterpriseSlug(t *testing.T) {
 
 	require.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
 }
+
+func TestCopilotAPIPathTrimsAndEscapesSlugAndResource(t *testing.T) {
+	path := copilotAPIPath("enterprises", "  my-enterprise  ", "/copilot/billing/seats")
+
+	require.Equal(t, "enterprises/my-enterprise/copilot/billing/seats", path)
+}
+
+func TestCopilotAPIPathEscapesSlugSegments(t *testing.T) {
+	path := copilotAPIPath("orgs", "my enterprise", "/copilot/billing")
+
+	require.Equal(t, "orgs/my%20enterprise/copilot/billing", path)
+}
