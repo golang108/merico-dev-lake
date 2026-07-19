@@ -145,6 +145,7 @@ func All() []plugin.MigrationScript {
 		new(modifyCicdDeploymentsToText),
 		new(increaseCqIssuesProjectKeyLength),
 		new(addAuthSessions),
+		new(changeIssueComponentToText),
 		new(changeCqIssueCodeBlocksComponentToText),
 		new(addCqProjectMetricsHistory),
 	}
